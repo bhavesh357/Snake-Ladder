@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash -x
 #constants
 declare isSnake=1
 declare isLadder=2
@@ -119,7 +119,5 @@ function startGame() {
 }
 
 echo "Welcome to Snake and Ladder"
-#Echo "Number of players playing"
-#read players
-players=2
-startGame $players
+
+startGame
