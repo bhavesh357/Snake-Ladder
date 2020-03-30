@@ -51,7 +51,12 @@ function play() {
 			;;
 		$isLadder)
 			newPosition=$(($currentPosition+$dice))
-			positionOfFirst[diceOfFirst]=$newPosition
+			if [ $newPosition -le 100 ]
+			then
+				positionOfFirst[diceOfFirst]=$newPosition
+			else
+				positionOfFirst[diceOfFirst]=$currentPosition
+			fi
 			;;
 		*)
 			newPosition=$currentPosition
