@@ -2,7 +2,9 @@
 #constants
 declare isSnake=1
 declare isLadder=2
-declare limit=20 #change this to check with smaller value
+declare limit=100 #change this to check with smaller value
+declare playerOne=1
+declare playerTwo=2
 
 #variables
 declare -a isWon
@@ -100,33 +102,19 @@ function play() {
 }
 
 function startGame() {
-	numberOfPlayers=$1
-	for ((i=1;i<=$numberOfPlayers;i++))
+	isWon[$playerOne]=0
+	isWon[$playerTwo]=0
+	positionOfFirst[0]=0
+	positionOfSecond[0]=0
+	while [[ ${isWon[$playerOne]} -eq 0 && ${isWon[$playerTwo]} -eq 0 ]]
 	do
-		isWon[$i]=0
-		if [ $i -eq 1 ]
-		then
-			positionOfFirst[0]=0
-		else
-			positionOfSecond[0]=0
-		fi
+		play $playerOne
+		play $playerTwo	
 	done
-	while [[ ${isWon[1]} -eq 0 && ${isWon[2]} -eq 0 ]]
-	do
-		for ((j=1;j<=$numberOfPlayers;j++))
-		do
-			play $j
-		done	
-	done
-	echo player 1 rolled dice $diceOfFirst times
+	echo player $playerOne and $playerTwo rolled dice $diceOfFirst times
 	for ((l=0;l<=diceOfFirst;l++))
 	do
-		echo turn $l position ${positionOfFirst[l]}
-	done
-	echo player 2 rolled dice $diceOfFirst times
-	for ((k=0;k<=diceOfSecond;k++))
-	do
-		echo turn $k position ${positionOfSecond[k]}
+		echo turn $l position $playerOne ${positionOfFirst[l]} position $playerTwo ${positionOfSecond[l]} 
 	done
 }
 
