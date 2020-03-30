@@ -1,9 +1,9 @@
-#!/bin/bash -x
+#!/bin/bash 
 #constants
 declare -a positionOfFirst
 declare isSnake=1
 declare isLadder=2
-
+declare limit=100 #change this to check with smaller value
 #variables
 declare -a isWon
 declare diceOfFirst=0
@@ -23,7 +23,7 @@ function checkIfWon() {
 	then
 		position=${positionOfFirst[diceOfFirst]}
 	fi
-	if [ $position -ge 100 ]
+	if [ $position -ge $limit ]
 	then
 		isWon[$winner]=1
 		echo player $winner has won
@@ -51,7 +51,7 @@ function play() {
 			;;
 		$isLadder)
 			newPosition=$(($currentPosition+$dice))
-			if [ $newPosition -le 100 ]
+			if [ $newPosition -le $limit ]
 			then
 				positionOfFirst[diceOfFirst]=$newPosition
 			else
@@ -66,7 +66,8 @@ function play() {
 	checkIfWon $currentPlayer
 }
 function startGame() {
-	for ((i=1;i<=$1;i++))
+	numberOfPlayers=$1
+	for ((i=1;i<=$numberOfPlayers;i++))
 	do
 		isWon[$i]=0
 		if [ $i -eq 1 ]
@@ -74,13 +75,17 @@ function startGame() {
 			positionOfFirst[0]=0
 		fi
 	done
-
 	while [ ${isWon[1]} -eq 0 ]
 	do
-		for ((j=1;j<=$1;j++))
+		for ((j=1;j<=$numberOfPlayers;j++))
 		do
 			play $j
 		done	
+	done
+	echo player 1 rolled dice $diceOfFirst times
+	for ((l=0;l<=diceOfFirst;l++))
+	do
+		echo turn $l position ${positionOfFirst[l]}
 	done
 }
 
