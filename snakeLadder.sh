@@ -3,6 +3,7 @@
 declare isSnake=1
 declare isLadder=2
 declare limit=20 #change this to check with smaller value
+
 #variables
 declare -a isWon
 declare -a positionOfFirst
@@ -97,6 +98,7 @@ function play() {
 	esac
 	checkIfWon $currentPlayer
 }
+
 function startGame() {
 	numberOfPlayers=$1
 	for ((i=1;i<=$numberOfPlayers;i++))
