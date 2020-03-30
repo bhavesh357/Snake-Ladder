@@ -1,18 +1,43 @@
 #!/bin/bash -x
 #constants
 declare -a positionOfFirst
+
 #variables
 declare -a isWon
 declare diceOfFirst=0
+
+#functions
 function rollDice(){
 	echo $(($(($RANDOM%6))+1))
 }
+
+function getOption() {
+	echo $(($RANDOM%3))	
+}
+
 function play() {
+	currentPlayer=$1
 	dice=$( rollDice )
-	if [ $1 -eq 1 ]
+	if [ $currentPlayer -eq 1 ]
 	then
+		currentPosition=${positionOfFirst[diceOfFirst]}
 		((diceOfFirst++))
 	fi
+	option=$( getOption )
+	case $option in
+		isSnake)
+			newPosition=$(($currentPosition-$dice))
+			positionOfFirst[diceOfFirst]=$newPosition
+			;;
+		isLadder)
+			newPosition=$(($currentPosition+$dice))
+			positionOfFirst[diceOfFirst]=$newPosition
+			;;
+		*)
+			newPosition=$currentPosition
+			positionOfFirst[diceOfFirst]=$newPosition
+			;;
+	esac
 }
 function startGame() {
 	for ((i=1;i<=$1;i++))
