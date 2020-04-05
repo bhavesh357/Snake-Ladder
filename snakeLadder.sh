@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 #constants
 declare isSnake=1
 declare isLadder=2
@@ -7,7 +7,7 @@ declare playerOne=1
 declare playerTwo=2
 
 #variables
-declare -a isWon
+isWon=0
 declare -a positionOfFirst
 declare diceOfFirst=0
 declare -a positionOfSecond
@@ -32,7 +32,7 @@ function checkIfWon() {
 	fi
 	if [ $position -ge $limit ]
 	then
-		isWon[$winner]=1
+		isWon=$winner
 		echo player $winner has won
 	fi
 }
@@ -106,7 +106,7 @@ function startGame() {
 	isWon[$playerTwo]=0
 	positionOfFirst[0]=0
 	positionOfSecond[0]=0
-	while [[ ${isWon[$playerOne]} -eq 0 && ${isWon[$playerTwo]} -eq 0 ]]
+	while [[ isWon -eq 0 ]]
 	do
 		play $playerOne
 		play $playerTwo	
@@ -114,7 +114,7 @@ function startGame() {
 	echo player $playerOne and $playerTwo rolled dice $diceOfFirst times
 	for ((l=0;l<=diceOfFirst;l++))
 	do
-		echo turn $l position $playerOne ${positionOfFirst[l]} position $playerTwo ${positionOfSecond[l]} 
+		echo turn $l position of player $playerOne is ${positionOfFirst[l]} position of player $playerTwo is ${positionOfSecond[l]} 
 	done
 }
 
