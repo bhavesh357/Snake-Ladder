@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/bash 
 #constants
 declare isSnake=1
 declare isLadder=2
-declare limit=100 #change this to check with smaller value
+declare limit=10 #change this to check with smaller value
 declare playerOne=1
 declare playerTwo=2
 
@@ -37,6 +37,27 @@ function checkIfWon() {
 	fi
 }
 
+function doOption() {
+	comp=$1
+	updatePosition=$2
+	if [ $currentPlayer -eq 1 ]
+	then
+		if [ $newPosition -ge $comp ]
+		then
+			positionOfFirst[diceOfFirst]=$newPosition
+		else
+			positionOfFirst[diceOfFirst]=$updatePosition
+		fi
+	else
+		if [ $newPosition -ge $comp ]
+		then
+			positionOfSecond[diceOfSecond]=$newPosition
+		else
+			positionOfSecond[diceOfSecond]=$updatePosition
+		fi
+	fi
+}
+
 function play() {
 	currentPlayer=$1
 	dice=$( rollDice )
@@ -52,50 +73,15 @@ function play() {
 	case $option in
 		$isSnake)
 			newPosition=$(($currentPosition-$dice))
-			if [ $currentPlayer -eq 1 ]
-			then
-				if [ $newPosition -ge 0 ]
-				then
-					positionOfFirst[diceOfFirst]=$newPosition
-				else
-					positionOfFirst[diceOfFirst]=0
-				fi
-			else
-				if [ $newPosition -ge 0 ]
-				then
-					positionOfSecond[diceOfSecond]=$newPosition
-				else
-					positionOfSecond[diceOfSecond]=0
-				fi
-			fi
+			doOption 0 0
 			;;
 		$isLadder)
 			newPosition=$(($currentPosition+$dice))
-			if [ $currentPlayer -eq 1 ]
-			then
-				if [ $newPosition -le $limit ]
-				then
-					positionOfFirst[diceOfFirst]=$newPosition
-				else
-					positionOfFirst[diceOfFirst]=$currentPosition
-				fi
-			else
-				if [ $newPosition -le $limit ]
-				then
-					positionOfSecond[diceOfSecond]=$newPosition
-				else
-					positionOfSecond[diceOfSecond]=$currentPosition
-				fi
-			fi
+			doOption $limit $newPosition
 			;;
 		*)
 			newPosition=$currentPosition
-			if [ $currentPlayer -eq 1 ]
-			then	
-				positionOfFirst[diceOfFirst]=$newPosition
-			else	
-				positionOfSecond[diceOfSecond]=$newPosition
-			fi
+			doOption $newPosition $newPosition
 			;;
 	esac
 	checkIfWon $currentPlayer
